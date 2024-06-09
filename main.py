@@ -17,11 +17,11 @@ from utils import (
 )
 from urllib.parse import urlparse
 
-# server = "http://line2.protv.cc/c/"
-server = "http://600600.org:8080/c/"
+server = "http://line.rs6ott.com/c/"
+# server = "http://600600.org:8080/c/"
 host = "".join(server.split("/c/"))
-# mac = "00:1A:79:00:94:57"
-mac = "00:1A:79:B0:B0:B2"
+mac = "00:1A:79:34:3F:F1"
+# mac = "00:1A:79:B0:B0:B2"
 headers_token["Referer"] = server
 headers_token["Host"] = urlparse(server).netloc
 headers_token["Cookie"] = f"mac={mac.strip()}; stb_lang=en; timezone=GMT;"
@@ -309,7 +309,12 @@ page x: to go to page x
                         break
 
                     url = getVodLink(
-                        token, selectedSeason["cmd"], host, "vod", headers_g, choice
+                        token,
+                        selectedSeason["cmd"],
+                        host,
+                        "vod",
+                        headers_g,
+                        str(choice),
                     )
 
                     playWithMPV(url, serie["name"])
@@ -324,6 +329,7 @@ while True:
     token = getToken(host, headers_token)
     if not token:
         print("Token non généré\n")
+        wait()
         continue
     print(f"Token generé :{token}\r")
 
@@ -348,3 +354,4 @@ Choix:
         vodchoice(token)
     if choix == "3":
         seriesChoice(token)
+    wait()
