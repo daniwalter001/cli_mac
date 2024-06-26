@@ -17,11 +17,15 @@ from utils import (
 )
 from urllib.parse import urlparse
 
-server = "http://line.rs6ott.com/c/"
-# server = "http://600600.org:8080/c/"
+#server = "http://line.rs6ott.com/c/"
+#server = "http://600600.org:8080/c/"
+#server = "http://mag.greatott.me:80/c/"
+server = "http://185.243.7.151:80/c/"
 host = "".join(server.split("/c/"))
-mac = "00:1A:79:34:3F:F1"
-# mac = "00:1A:79:B0:B0:B2"
+#mac = "00:1A:79:34:3F:F1"
+#mac = "00:1A:79:B0:B0:B2"
+#mac="00:1A:79:3D:49:64"
+mac="00:1A:79:B5:10:B5"
 headers_token["Referer"] = server
 headers_token["Host"] = urlparse(server).netloc
 headers_token["Cookie"] = f"mac={mac.strip()}; stb_lang=en; timezone=GMT;"
