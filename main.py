@@ -21,11 +21,17 @@ from urllib.parse import urlparse
 #server = "http://600600.org:8080/c/"
 #server = "http://mag.greatott.me:80/c/"
 server = "http://185.243.7.151:80/c/"
+server = "http://ott4k.me:80/c/"
+server = "http://fuego-iptv.net:8080/c"
+
 host = "".join(server.split("/c/"))
 #mac = "00:1A:79:34:3F:F1"
 #mac = "00:1A:79:B0:B0:B2"
 #mac="00:1A:79:3D:49:64"
 mac="00:1A:79:B5:10:B5"
+mac="00:1A:79:00:00:22"
+mac="00:1A:79:00:20:AF"
+
 headers_token["Referer"] = server
 headers_token["Host"] = urlparse(server).netloc
 headers_token["Cookie"] = f"mac={mac.strip()}; stb_lang=en; timezone=GMT;"
