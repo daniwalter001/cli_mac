@@ -16,21 +16,22 @@ from utils import (
     getVodLink,
 )
 from urllib.parse import urlparse
+from simple_term_menu import TerminalMenu
 
-#server = "http://line.rs6ott.com/c/"
-#server = "http://600600.org:8080/c/"
-#server = "http://mag.greatott.me:80/c/"
+# server = "http://line.rs6ott.com/c/"
+# server = "http://600600.org:8080/c/"
+# server = "http://mag.greatott.me:80/c/"
 server = "http://185.243.7.151:80/c/"
 server = "http://ott4k.me:80/c/"
 server = "http://fuego-iptv.net:8080/c"
 
 host = "".join(server.split("/c/"))
-#mac = "00:1A:79:34:3F:F1"
-#mac = "00:1A:79:B0:B0:B2"
-#mac="00:1A:79:3D:49:64"
-mac="00:1A:79:B5:10:B5"
-mac="00:1A:79:00:00:22"
-mac="00:1A:79:00:20:AF"
+# mac = "00:1A:79:34:3F:F1"
+# mac = "00:1A:79:B0:B0:B2"
+# mac="00:1A:79:3D:49:64"
+mac = "00:1A:79:B5:10:B5"
+mac = "00:1A:79:00:00:22"
+mac = "00:1A:79:00:20:AF"
 
 headers_token["Referer"] = server
 headers_token["Host"] = urlparse(server).netloc
@@ -55,11 +56,20 @@ def tvChoice(token: str):
             break
 
         print("Affichage des canaux")
-        for i, el in enumerate(genres):
-            print(f"{i+1}. {genres[el]}")
 
-        print("Choix : ")
-        genreChoice = input()
+        terminal_menu_for_tv = TerminalMenu(
+            list(map(lambda x: str(x).replace("|", ":"), genres.values()))
+            + ["[q] Quitter"],
+            show_search_hint="Press / to search",
+            title="Affichage des genres",
+        )
+        genreChoice = terminal_menu_for_tv.show()
+
+        if len(genres) <= genreChoice:
+            genreChoice = "q"
+
+        genreChoice = str(genreChoice)
+
         if genreChoice == "0" or genreChoice.lower() == "q":
             break
         try:
@@ -74,8 +84,8 @@ def tvChoice(token: str):
 
         clear()
 
-        genreSelectedId = list(genres.keys())[genreChoice - 1]
-        genreSelected = genres[list(genres.keys())[genreChoice - 1]]
+        genreSelectedId = list(genres.keys())[genreChoice]
+        genreSelected = genres[list(genres.keys())[genreChoice]]
 
         channels = list(
             filter(lambda x: x["tv_genre_id"] == genreSelectedId, allChannels)
@@ -84,11 +94,18 @@ def tvChoice(token: str):
         while True:
             clear()
             print(f"Affichage des canaux de {genreSelected}\r")
-            for i, el in enumerate(channels):
-                print(f"{i+1}. {el['name']}")
 
-            print("Choisis une chaine : ")
-            channelChoice = input()
+            terminal_menu_for_channel = TerminalMenu(
+                list(map(lambda x: str(x["name"]).replace("|", ":"), channels))
+                + ["[q] Quitter"],
+                show_search_hint="Press / to search",
+                title="Affichage des canaux",
+            )
+            channelChoice = terminal_menu_for_channel.show()
+            if len(channels) <= channelChoice:
+                channelChoice = "q"
+            channelChoice = str(channelChoice)
+
             if channelChoice == "0" or channelChoice.lower() == "q":
                 break
             try:
@@ -101,7 +118,7 @@ def tvChoice(token: str):
                 print("Choix invalide\n")
                 continue
 
-            channelSelected = channels[channelChoice - 1]
+            channelSelected = channels[channelChoice]
 
             # print(channelSelected)
             print("Playing...")
@@ -123,10 +140,22 @@ def vodchoice(token=""):
         clear()
         print("Vod: Genres")
 
-        for i, genre in enumerate(vodgenres):
-            print(f"{i+1}. {genre['title']}")
+        # for i, genre in enumerate(vodgenres):
+        #     print(f"{i+1}. {genre['title']}")
 
-        choixGenre = input("Choix du genre de vod: ")
+        # choixGenre = input("Choix du genre de vod: ")
+
+        terminal_menu_for_vodgenre = TerminalMenu(
+            list(map(lambda x: str(x["title"]).replace("|", ":"), vodgenres))
+            + ["[q] Quitter"],
+            show_search_hint="Press / to search",
+            title="Affichage des genres",
+        )
+        choixGenre = terminal_menu_for_vodgenre.show()
+        if len(vodgenres) <= choixGenre:
+            choixGenre = "q"
+
+        choixGenre = str(choixGenre)
 
         if not choixGenre:
             continue
@@ -139,7 +168,7 @@ def vodchoice(token=""):
         except Exception:
             choixGenre = 1
 
-        genre = vodgenres[choixGenre - 1]
+        genre = vodgenres[choixGenre]
 
         page = 1
         while True:
@@ -156,10 +185,10 @@ def vodchoice(token=""):
 
             print(
                 """
-s: Suivant
-p: Precendent
-page x: to go to page x
-1-max element: to choose what vod to show
+    s: Suivant
+    p: Precendent
+    page x: to go to page x
+    1-max element: to choose what vod to show
             """
             )
 
@@ -211,13 +240,25 @@ def seriesChoice(token=""):
         clear()
         print("Series: Genres")
 
-        for i, genre in enumerate(seriesgenres):
-            print(f"{i+1}. {genre['title']}")
+        # for i, genre in enumerate(seriesgenres):
+        #     print(f"{i+1}. {genre['title']}")
 
-        choixGenre = input("Choix du genre de la serie: ")
+        # choixGenre = input("Choix du genre de la serie: ")
+
+        terminal_menu_for_series = TerminalMenu(
+            list(map(lambda x: str(x["title"]).replace("|", ":"), seriesgenres))
+            + ["[q] Quitter"],
+            show_search_hint="Press / to search",
+            title="Affichage des genres",
+        )
+        choixGenre = terminal_menu_for_series.show()
+        if len(seriesgenres) <= choixGenre:
+            choixGenre = "q"
 
         if not choixGenre:
             continue
+
+        choixGenre = str(choixGenre)
 
         if choixGenre.lower() == "q" or choixGenre.lower() == "0":
             break
@@ -227,7 +268,7 @@ def seriesChoice(token=""):
         except Exception:
             choixGenre = 1
 
-        genre = seriesgenres[choixGenre - 1]
+        genre = seriesgenres[choixGenre]
 
         page = 1
         while True:
@@ -280,7 +321,7 @@ page x: to go to page x
                 clear()
                 print(f"{serie['name']}")
                 print(f"{serie['description']}")
-                print(f"Has files: {serie['has_files']=='1'}")
+                # print(f"Has files: {serie['has_files']=='1'}")
 
                 seasons = getVodDetails(token, serie["id"], host, "series", headers_g)
 
@@ -288,17 +329,28 @@ page x: to go to page x
                     break
 
                 print("Seasons:")
-                for i, season in enumerate(seasons):
-                    print(f"{i+1}. {season['name']}")
+                # for i, season in enumerate(seasons):
+                #     print(f"{i+1}. {season['name']}")
 
-                choice = input("Choix: ")
+                # choice = input("Choix: ")
 
+                terminal_menu_for_seasons = TerminalMenu(
+                    list(map(lambda x: str(x["name"]).replace("|", ":"), seasons))
+                    + ["[q] Quitter"],
+                    show_search_hint="Press / to search",
+                    title="Affichage des saisons",
+                )
+                choice = terminal_menu_for_seasons.show()
+                if len(seasons) <= choice:
+                    choice = "q"
+
+                choice = str(choice)
                 choice = handleChoice(choice)
 
                 if choice == Consts.toBreak:
                     break
 
-                selectedSeason = seasons[choice - 1]
+                selectedSeason = seasons[choice]
 
                 if not (selectedSeason and len(selectedSeason["series"])):
                     print("Pas d'episodes")
@@ -307,16 +359,33 @@ page x: to go to page x
 
                 while True:
                     clear()
-                    print("Episodes:")
-                    for i, episode in enumerate(selectedSeason["series"]):
-                        print(f"{i+1}. Episode{episode}")
+                    # print("Episodes:")
+                    # for i, episode in enumerate(selectedSeason["series"]):
+                    #     print(f"{i+1}. Episode{episode}")
 
-                    choice = input("Choix: ")
+                    # choice = input("Choix: ")
+
+                    terminal_menu_for_seasons = TerminalMenu(
+                        list(map(lambda x: f"Episode {x}", selectedSeason["series"]))
+                        + ["[q] Quitter"],
+                        show_search_hint="Press / to search",
+                        title="Affichage des episodes",
+                    )
+                    choice = terminal_menu_for_seasons.show()
+
+                    if len(selectedSeason["series"]) <= choice:
+                        choice = "q"
+                    choice = str(choice)
 
                     choice = handleChoice(choice)
 
                     if choice == Consts.toBreak:
                         break
+
+                    try:
+                        choice = int(choice) + 1
+                    except:
+                        choice = 1
 
                     url = getVodLink(
                         token,

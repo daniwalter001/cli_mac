@@ -382,7 +382,8 @@ class Consts(Enum):
 
 
 def handleChoice(choice):
-    if choice.lower() == "q" or choice.lower() == "0":
+    if choice.lower() == "q":
+        # if choice.lower() == "q" or choice.lower() == "0":
         return Consts.toBreak
     try:
         choice = int(choice)
