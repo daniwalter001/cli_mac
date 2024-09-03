@@ -381,12 +381,11 @@ class Consts(Enum):
     toBreak = "BREAK"
 
 
-def handleChoice(choice):
+def handleChoice(choice: str):
     if choice.lower() == "q":
-        # if choice.lower() == "q" or choice.lower() == "0":
         return Consts.toBreak
     try:
         choice = int(choice)
-    except Exception:
+    except ValueError:
         choice = 1
     return choice

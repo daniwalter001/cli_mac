@@ -15,23 +15,43 @@ from utils import (
     getAllVodbyGenres,
     getVodLink,
 )
+import sys
 from urllib.parse import urlparse
 from simple_term_menu import TerminalMenu
 
-# server = "http://line.rs6ott.com/c/"
-# server = "http://600600.org:8080/c/"
-# server = "http://mag.greatott.me:80/c/"
-server = "http://185.243.7.151:80/c/"
-server = "http://ott4k.me:80/c/"
-server = "http://fuego-iptv.net:8080/c"
+creds = [
+    {"server": "http://sport-birutv.my.id/c/", "mac": "00:1A:79:2D:9F:F5"},
+    {"server": "http://185.243.7.151:80/c/", "mac": "00:1A:79:2D:9F:F5"},
+    {"server": "http://185.243.7.151:80/c/", "mac": "00:1A:79:6D:1B:14"}
+]
+
+
+terminal_menu_for_creds = TerminalMenu(
+    list(map(lambda x: f"{x['server']}: {x['mac']}", creds)) + ["[q] Quitter"],
+    show_search_hint="Press / to search",
+    title="Affichage des creds",
+)
+
+cred_index = terminal_menu_for_creds.show()
+
+if len(creds) <= cred_index:
+    cred_index = "q"
+
+cred_index = handleChoice(str(cred_index))
+
+if cred_index == Consts.toBreak:
+    print("Exiting...")
+    sys.exit()
+
+print(cred_index)
+server = creds[cred_index]["server"]
+mac = creds[cred_index]["mac"]
+
+if not server or not mac:
+    print("Creds invalides...exiting")
+    sys.exit()
 
 host = "".join(server.split("/c/"))
-# mac = "00:1A:79:34:3F:F1"
-# mac = "00:1A:79:B0:B0:B2"
-# mac="00:1A:79:3D:49:64"
-mac = "00:1A:79:B5:10:B5"
-mac = "00:1A:79:00:00:22"
-mac = "00:1A:79:00:20:AF"
 
 headers_token["Referer"] = server
 headers_token["Host"] = urlparse(server).netloc
@@ -139,11 +159,6 @@ def vodchoice(token=""):
     while True:
         clear()
         print("Vod: Genres")
-
-        # for i, genre in enumerate(vodgenres):
-        #     print(f"{i+1}. {genre['title']}")
-
-        # choixGenre = input("Choix du genre de vod: ")
 
         terminal_menu_for_vodgenre = TerminalMenu(
             list(map(lambda x: str(x["title"]).replace("|", ":"), vodgenres))

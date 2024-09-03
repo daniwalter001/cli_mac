@@ -3,4 +3,5 @@ charset-normalizer==3.3.2
 idna==3.7
 mpv==1.0.6
 requests==2.32.2
+simple-term-menu==1.6.4
 urllib3==2.2.1
