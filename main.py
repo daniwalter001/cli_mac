@@ -20,9 +20,12 @@ from urllib.parse import urlparse
 from simple_term_menu import TerminalMenu
 
 creds = [
-    {"server": "http://sport-birutv.my.id/c/", "mac": "00:1A:79:2D:9F:F5"},
-    {"server": "http://185.243.7.151:80/c/", "mac": "00:1A:79:2D:9F:F5"},
-    {"server": "http://185.243.7.151:80/c/", "mac": "00:1A:79:6D:1B:14"}
+    {"server": "http://23232.top/c/", "mac": "00:1A:79:00:36:BD"},
+    {"server": "http://1234up.com:8080/c/", "mac": "00:1A:79:A9:12:C6"},
+    {"server": "http://gauloise.cc/c/", "mac": "00:1A:79:A8:A9:DD"},
+    {"server": "http://dm.lion-ott.com/c/", "mac": "00:1A:79:A8:F7:2D"},
+    {"server": "http://r665.io/c/", "mac": "00:1A:79:A9:1E:20"}
+    
 ]
 
 
@@ -90,7 +93,7 @@ def tvChoice(token: str):
 
         genreChoice = str(genreChoice)
 
-        if genreChoice == "0" or genreChoice.lower() == "q":
+        if genreChoice.lower() == "q":
             break
         try:
             genreChoice = int(genreChoice)
@@ -98,7 +101,7 @@ def tvChoice(token: str):
             print("Choix invalide\n")
             continue
 
-        if genreChoice < 1 or genreChoice > len(genres):
+        if genreChoice < 0 or genreChoice > len(genres):
             print("Choix invalide\n")
             continue
 
@@ -126,7 +129,7 @@ def tvChoice(token: str):
                 channelChoice = "q"
             channelChoice = str(channelChoice)
 
-            if channelChoice == "0" or channelChoice.lower() == "q":
+            if channelChoice.lower() == "q":
                 break
             try:
                 channelChoice = int(channelChoice)
@@ -134,7 +137,7 @@ def tvChoice(token: str):
                 print("Choix invalide\n")
                 continue
 
-            if channelChoice < 1 or channelChoice > len(channels):
+            if channelChoice < 0 or channelChoice > len(channels):
                 print("Choix invalide\n")
                 continue
 
